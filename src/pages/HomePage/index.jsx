@@ -1,44 +1,37 @@
 import './style.css';
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
+import { Joke } from './components/Joke';
+
 
 export const HomePage = () => {
-  // stavy pro hodnotu plus a mínus
-  const [countPlus, setCountPlus] = useState(0)
-  const [countMinus, setCountMinus] = useState(0)
+  const [jokes, setJokes] = useState([])
 
-  // funkce pro přičítání a odečítná
-  const changeCountUp = () => {
-    setCountPlus(countPlus + 1)
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('http://localhost:4000/api/jokes');
+      const data = await response.json();
+      setJokes(data.result);
+      console.log(data.result)
+    };
 
-  const changeCountDown = () => {
-    setCountMinus(countMinus - 1)
-  }
-
-
+    fetchData();
+  }, []);
 
   return (
     <div className="container">
     <div className="joke">
-      <div className="joke__body">
-        <div className="joke__user">
-          <img className="user-avatar" src="https://raw.githubusercontent.com/Czechitas-podklady-WEB/dadjokes/main/users/user01.png" />
-          <p className="user-name">Neroxx</p>
-        </div>
-
-        <p className="joke__text">
-          The secret service isn't allowed to yell "Get down!" anymore when
-          the president is about to be attacked. Now they have to yell
-          "Donald, duck!"
-        </p>
+        {jokes.map((joke) => (
+          <Joke
+            key={joke.id}
+            id={joke.id}
+            userAvatar={joke.avatar}
+            userName={joke.name}
+            text={joke.text}
+            likes={joke.likes}
+            dislikes={joke.dislikes}
+          />
+        ))}
       </div>
-      <div className="joke__likes">
-        <button id="btn-up" className="btn-like btn-like--up" onClick={changeCountUp}></button>
-        <span id="likes-up" className="likes-count likes-count--up">{countPlus}</span>
-        <button id="btn-down" className="btn-like btn-like--down" onClick={changeCountDown}></button>
-        <span id="likes-down" className="likes-count likes-count--down">{countMinus}</span>
-      </div>
-    </div>
   </div>
   );
 };
