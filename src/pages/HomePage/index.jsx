@@ -10,7 +10,7 @@ export const HomePage = () => {
       <main>
       </main>
       <footer>
-        <p>Czechitas, Digitální akademie: Web - Test</p>
+        <p>Czechitas, Digitální akademie: Web - TEST</p>
       </footer>
     </div>
   );
